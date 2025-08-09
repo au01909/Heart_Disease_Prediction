@@ -169,13 +169,25 @@ else:
 # ------------------- Model & Feature Info -------------------
 with st.expander("📊 Model & Feature Details"):
     st.write(f"**Model used:** {type(model).__name__}")
-    st.write(f"**Top features:** `{', '.join(selected_features)}`")
-    st.write("**Feature Ranges:**")
+    st.markdown("**Top Features & Descriptions:**")
+    
+    # Create a table mapping top features to their descriptions
+    top_feat_desc = [
+        {
+            "Feature": feat,
+            "Description": feature_descriptions.get(feat, "No description available")
+        }
+        for feat in selected_features
+    ]
+    st.table(pd.DataFrame(top_feat_desc))
+    
+    st.markdown("**Feature Value Ranges (in dataset):**")
     st.dataframe(
         pd.DataFrame(feature_ranges.items(), columns=["Feature", "Value Range"])
         .set_index("Feature")
     )
+
     st.markdown(
-        "<span style='font-size:0.96rem; color:#888'>This tool is for demo/education only. For medical decisions, consult a doctor.</span>",
+        "<span style='font-size:0.95rem; color:#888'>This tool is for educational/demo purposes only. Not medical advice.</span>",
         unsafe_allow_html=True
     )
